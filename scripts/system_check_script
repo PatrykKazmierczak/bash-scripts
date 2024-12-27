@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Author: Patryk Kaźmierczak
-# Date Created: 08/06/2023
-# Last Modified: 08/06/2023
+# Date Created: 27/12/2024
+# Last Modified: 27/12/2024
 
 # Description
 # This script checks the status of a Linux server, including CPU, memory, disk, network, uptime, processes, and updates.
