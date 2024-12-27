@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Author: Patryk Kaźmierczak
+# Date Created: 08/06/2023
+# Last Modified: 08/06/2023
+
+# Description
+# This script checks the status of a Linux server, including CPU, memory, disk, network, uptime, processes, and updates.
+
+# Usage:
+# Run the script directly to generate a system status report.
+
 # Function to display header
 print_header() {
     echo "=============================="
