@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Function to display header
+print_header() {
+    echo "=============================="
+    echo "$1"
+    echo "=============================="
+}
+
+# Check if required commands are installed and install if necessary
+check_and_install_command() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "$1 is not installed. Installing..."
+        if command -v apt &> /dev/null; then
+            sudo apt update && sudo apt install -y "$2"
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y "$2"
+        elif command -v dnf &> /dev/null; then
+            sudo dnf install -y "$2"
+        else
+            echo "Package manager not found. Please install $1 manually."
+            exit 1
+        fi
+    fi
+}
+
+# Validate essential commands
+check_and_install_command "mpstat" "sysstat"
+check_and_install_command "nmcli" "network-manager"
+check_and_install_command "ip" "iproute2"
+check_and_install_command "ps" "procps"
+check_and_install_command "free" "procps"
+check_and_install_command "df" "coreutils"
+check_and_install_command "uptime" "procps"
+check_and_install_command "w" "procps"
+check_and_install_command "awk" "gawk"
+
+# CPU usage
+print_header "CPU Usage"
+mpstat 1 1 | grep "all" | awk '{printf "CPU Usage: User: %s%% System: %s%% Idle: %s%%\n", $3, $5, $13}'
+
+# Memory usage
+print_header "Memory Usage"
+free -h | awk '/^Mem:/ {printf "Used: %s, Free: %s, Total: %s\n", $3, $4, $2}'
+
+# Disk usage
+print_header "Disk Usage"
+df -h --output=source,fstype,size,used,avail,pcent,target | column -t
+
+# Network statistics
+print_header "Network Statistics"
+if command -v nmcli &> /dev/null; then
+    nmcli device status
+else
+    echo "NetworkManager CLI (nmcli) not installed. Skipping..."
+fi
+ip -s link
+
+# System uptime
+print_header "System Uptime"
+uptime -p
+
+# Running processes
+print_header "Top Running Processes (by CPU)"
+ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 10
+
+print_header "Top Running Processes (by Memory)"
+ps -eo pid,comm,%cpu,%mem --sort=-%mem | head -n 10
+
+# Active users
+print_header "Active Users"
+w
+
+# System updates
+print_header "System Updates"
+if command -v apt &> /dev/null; then
+    echo "Checking for updates using apt..."
+    apt list --upgradable 2>/dev/null
+elif command -v yum &> /dev/null; then
+    echo "Checking for updates using yum..."
+    yum check-update
+elif command -v dnf &> /dev/null; then
+    echo "Checking for updates using dnf..."
+    dnf check-update
+else
+    echo "Update manager not found."
+fi
+
+# Security check
+print_header "Security Check (Firewall Status)"
+if command -v ufw &> /dev/null; then
+    sudo ufw status || echo "UFW not installed or inactive."
+else
+    echo "UFW (Uncomplicated Firewall) is not installed."
+fi
+
+# Save results to a file
+result_file="server_status_$(date +%Y%m%d_%H%M%S).log"
+exec > "$result_file" 2>&1
+
+# Script ends
+exit 0
