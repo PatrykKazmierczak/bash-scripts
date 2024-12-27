@@ -1,48 +1,22 @@
 #!/bin/bash
 
-# Author: Patryk Kaźmierczak
-# Date Created: 08/06/2023
+# Author: Patryk Kazmierczak
+# Created: 08/06/2023
 # Last Modified: 08/06/2023
 
-# Description
-# Creates a backup in ~/bash_scripts folder of all files in the directory
+# Description:
+# Creates a backup in the current directory of
+# all files in the home directory
 
-# Usage:
-# backup_script
+echo "Hello there, ${USER^}"
+echo "I will now back up your home directory, $HOME"
 
-echo "-------------------------------------------------------------------------------------"
+currentdir=$(pwd)
 
-echo "Script will start in 5 s of Backup Process"
+echo "I will create save the backup file in $currentdir"
 
-echo "-------------------------------------------------------------------------------------"
+tar -cf "$currentdir/my_backup_$(date +%d-%m-%Y_%H-%M-%S).tar" $HOME 2>/dev/null
 
-sleep 5s
+echo "Backup completed successfully"
 
-tar -cvf ~/bash_scripts/backups/my_backup_"$(date +%d-%m-%Y_%H-%M-%S)".tar ~/* 2>/dev/null
-
-backupdir=/bash_scripts/backups/
-
-currentdir=${PWD}
-
-echo "-------------------------------------------------------------------------------------"
-
-echo "Backup has been successfully created"
-
-echo "-------------------------------------------------------------------------------------"
-
-echo "Hello ${USER}"
-
-echo "-------------------------------------------------------------------------------------"
-
-echo "Now your backup home directory is, ${backupdir}"
-
-echo "-------------------------------------------------------------------------------------"
-
-echo "You are running this script from ${currentdir}"
-
-echo "-------------------------------------------------------------------------------------"
-
-echo "Backup Completed Successfully."
-
-echo "-------------------------------------------------------------------------------------"
 exit 0

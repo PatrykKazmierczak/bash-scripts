@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Author: Patryk Kaźmierczak
+# Date Created: 27/12/2024
+# Last Modified: 27/12/2024
+
 # Update package lists and upgrade existing packages
 sudo apt update
 sudo apt upgrade -y
