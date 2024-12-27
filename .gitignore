@@ -1,1 +1,19 @@
-backups/
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore Vim swap files
+*.swp
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore log files
+*.log
+
+# Ignore compiled binary files
+*.out
+*.exe
+
+# Ignore core dump files
+core
