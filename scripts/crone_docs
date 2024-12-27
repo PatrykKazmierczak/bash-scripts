@@ -1,29 +1,27 @@
 1. Prepare Your Script
+
 Make sure the script you want to run is ready and executable.
 
 Example script (myscript.sh):
 
-bash
-
 #!/bin/bash
 echo "My script is running!"
+
 # Add the commands you want your script to perform here
 Make your script executable:
 
-bash
-
 chmod +x /path/to/myscript.sh
+
+#-------------------------------------------------------------------------------------------------
+
 2. Set Up the Cron Job
+
 A cron job is a scheduled task that automatically runs at specific times or intervals.
 
 Open the cron job editor:
 
-bash
-
 crontab -e
 Add a new cron job entry. For example, to run your script every day at midnight, add:
-
-bash
 
 0 0 * * * /path/to/myscript.sh
 The format of a cron job is:
@@ -39,12 +37,13 @@ scss
 +------------ Minute (0 - 59)
 Save and exit the editor. Your cron job is now scheduled.
 
+#-------------------------------------------------------------------------------------------------
+
 3. Optional: Use a Wrapper Script
+
 If you want a simple wrapper script to handle logging or additional setup:
 
 Example wrapper script (runmyscript.sh):
-
-bash
 
 #!/bin/bash
 SCRIPT="/path/to/myscript.sh"   # The script you want to run
@@ -54,11 +53,7 @@ LOG="/var/log/myscript.log"    # Where to save the output
 $SCRIPT >> $LOG 2>&1
 Make the wrapper script executable:
 
-bash
-
 chmod +x /path/to/runmyscript.sh
 Add the wrapper script to the cron job:
-
-bash
 
 0 0 * * * /path/to/runmyscript.sh
